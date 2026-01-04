@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next'
 import { DM_Sans, Outfit } from 'next/font/google'
 import './globals.css'
 
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${outfit.variable}`}>
-      <body className="font-sans bg-background antialiased">{children}</body>
+      <body className="font-sans bg-background antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }
