@@ -1,5 +1,12 @@
 // Vercel Serverless Function - Form Submission Handler
-import { kv } from '@vercel/kv';
+let kv;
+try {
+    const kvModule = await import('@vercel/kv');
+    kv = kvModule.kv;
+} catch (e) {
+    console.warn('KV not available, using fallback mode');
+    kv = null;
+}
 
 // Retell AI integration
 async function triggerRetellCall(phone, leadData) {
@@ -49,6 +56,11 @@ async function triggerRetellCall(phone, leadData) {
 // Store lead in database
 async function storeLead(leadData) {
     const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+    if (!kv) {
+        console.log('KV not available, logging lead:', leadId, leadData);
+        return leadId;
+    }
 
     try {
         // Store lead data

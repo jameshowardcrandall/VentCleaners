@@ -1,14 +1,25 @@
 // Vercel Serverless Function - Analytics Tracking
-import { kv } from '@vercel/kv';
+let kv;
+try {
+    const kvModule = await import('@vercel/kv');
+    kv = kvModule.kv;
+} catch (e) {
+    console.warn('KV not available, using fallback mode');
+    kv = null;
+}
 
 // Track event and update A/B test metrics
 async function trackEvent(eventData) {
     const { eventType, variant, visitorId, timestamp } = eventData;
 
-    try {
-        // Create event ID
-        const eventId = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const eventId = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+    if (!kv) {
+        console.log(`Tracked ${eventType} for variant ${variant} (KV not available)`);
+        return { success: true, eventId };
+    }
+
+    try {
         // Store raw event
         await kv.set(eventId, {
             ...eventData,

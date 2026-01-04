@@ -8,13 +8,18 @@
     "build": "echo 'Static site - no build needed'",
     "deploy": "vercel --prod"
   },
-  "keywords": ["landing-page", "dryer-vent", "conversion"],
+  "keywords": [
+    "landing-page",
+    "dryer-vent",
+    "conversion"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "vercel": "^33.0.0"
   },
   "dependencies": {
-    "@vercel/kv": "^1.0.1"
+    "@vercel/kv": "^1.0.1",
+    "redis": "^5.10.0"
   }
 }

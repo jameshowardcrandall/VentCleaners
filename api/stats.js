@@ -1,5 +1,12 @@
 // Vercel Serverless Function - A/B Test Statistics Dashboard
-import { kv } from '@vercel/kv';
+let kv;
+try {
+    const kvModule = await import('@vercel/kv');
+    kv = kvModule.kv;
+} catch (e) {
+    console.warn('KV not available, using fallback mode');
+    kv = null;
+}
 
 // Calculate conversion rate
 function calculateConversionRate(impressions, conversions) {
@@ -49,6 +56,16 @@ function normalCDF(x) {
 
 // Get metrics for a variant
 async function getVariantMetrics(variant, period = 'total') {
+    if (!kv) {
+        return {
+            impressions: 0,
+            conversions: 0,
+            uniqueVisitors: 0,
+            uniqueConverters: 0,
+            conversionRate: '0.00'
+        };
+    }
+
     try {
         const metrics = await kv.hgetall(`metrics:${period}:${variant}`);
 
@@ -85,6 +102,10 @@ async function getVariantMetrics(variant, period = 'total') {
 
 // Get recent leads
 async function getRecentLeads(limit = 10) {
+    if (!kv) {
+        return [];
+    }
+
     try {
         const leadIds = await kv.lrange('leads:all', 0, limit - 1);
         const leads = await Promise.all(
