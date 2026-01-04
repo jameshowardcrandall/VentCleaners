@@ -66,7 +66,7 @@ body {
 h1 {
     font-size: 3rem;
     line-height: 1.2;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     color: #1a202c;
     font-weight: 800;
 }
@@ -74,8 +74,28 @@ h1 {
 .hero-subtitle {
     font-size: 1.25rem;
     color: #4a5568;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     font-weight: 400;
+}
+
+/* Trust Badges */
+.trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.trust-badges .badge {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 2px solid #86efac;
+    white-space: nowrap;
 }
 
 .benefits-grid {
@@ -348,4 +368,73 @@ h1 {
         font-size: 1rem;
         padding: 15px 20px;
     }
+
+    .trust-badges {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .faq-steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* FAQ Section */
+.faq-section {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.faq-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: #1a202c;
+}
+
+.faq-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.faq-step {
+    text-align: center;
+    padding: 30px 20px;
+    background: #f7fafc;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faq-step:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.step-number {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.faq-step h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #2d3748;
+}
+
+.faq-step p {
+    color: #4a5568;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }

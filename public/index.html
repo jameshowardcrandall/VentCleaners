@@ -8,17 +8,39 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <!-- A/B Test Variant Container -->
     <div id="variant-container"></div>
 
-    <!-- Variant A: Urgency/Safety Focus -->
+    <!-- Variant A: Safety Focus -->
     <template id="variant-a">
         <div class="hero variant-a">
             <div class="container">
                 <div class="hero-content">
-                    <div class="warning-badge">⚠️ 15,000+ dryer fires occur annually</div>
-                    <h1>Protect Your Home from Dryer Fires</h1>
+                    <h1>Need Your Ducts Cleaned?</h1>
                     <p class="hero-subtitle">Professional dryer vent cleaning that prevents fires, cuts energy bills, and keeps your family safe.</p>
+
+                    <div class="trust-badges">
+                        <div class="badge">✓ Upfront Pricing</div>
+                        <div class="badge">✓ 100% Satisfaction Guaranteed</div>
+                        <div class="badge">✓ No Hidden Fees</div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>Get Your Free Quote Now</h2>
+                        <p class="cta-subtext">Enter your phone number and we'll call you within 15 minutes</p>
+                        <form id="lead-form" class="lead-form">
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="(555) 123-4567"
+                                required
+                                pattern="[0-9\s\-\(\)]{10,}"
+                                class="phone-input"
+                            >
+                            <button type="submit" class="cta-button">Get My Free Quote</button>
+                        </form>
+                        <p class="trust-text">🔒 We respect your privacy. No spam, just a quick call.</p>
+                    </div>
 
                     <div class="benefits-grid">
                         <div class="benefit">
@@ -43,22 +65,25 @@
                         </div>
                     </div>
 
-                    <div class="cta-section">
-                        <h2>Get Your Free Quote Now</h2>
-                        <p class="cta-subtext">Enter your phone number and we'll call you within 15 minutes</p>
-                        <form id="lead-form" class="lead-form">
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="(555) 123-4567"
-                                required
-                                pattern="[0-9\s\-\(\)]{10,}"
-                                class="phone-input"
-                            >
-                            <button type="submit" class="cta-button">Get My Free Quote</button>
-                        </form>
-                        <p class="trust-text">🔒 We respect your privacy. No spam, just a quick call.</p>
+                    <div class="faq-section">
+                        <h2>How It Works</h2>
+                        <div class="faq-steps">
+                            <div class="faq-step">
+                                <div class="step-number">1</div>
+                                <h3>Get a Free Quote Instantly!</h3>
+                                <p>If you're happy with your quote we can schedule your cleaning.</p>
+                            </div>
+                            <div class="faq-step">
+                                <div class="step-number">2</div>
+                                <h3>Arrival & Cleaning</h3>
+                                <p>Our technician will arrive on-time & will be wearing face masks for your safety.</p>
+                            </div>
+                            <div class="faq-step">
+                                <div class="step-number">3</div>
+                                <h3>Full Video Inspection</h3>
+                                <p>Once the cleaning is finished, our technician will show you a full video of the inside of your ducts!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,9 +95,32 @@
         <div class="hero variant-b">
             <div class="container">
                 <div class="hero-content">
-                    <div class="value-badge">💰 Save $200+ per year on energy</div>
-                    <h1>Cut Your Dryer Energy Costs in Half</h1>
+                    <h1>Need Your Ducts Cleaned?</h1>
                     <p class="hero-subtitle">Professional dryer vent cleaning delivers faster drying, lower bills, and peace of mind.</p>
+
+                    <div class="trust-badges">
+                        <div class="badge">✓ Upfront Pricing</div>
+                        <div class="badge">✓ 100% Satisfaction Guaranteed</div>
+                        <div class="badge">✓ No Hidden Fees</div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>Schedule Your Service Today</h2>
+                        <p class="cta-subtext">Get a callback in 15 minutes - no commitment required</p>
+                        <form id="lead-form" class="lead-form">
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Your phone number"
+                                required
+                                pattern="[0-9\s\-\(\)]{10,}"
+                                class="phone-input"
+                            >
+                            <button type="submit" class="cta-button">Call Me Now</button>
+                        </form>
+                        <p class="trust-text">✓ No obligation quote • Same-day service available</p>
+                    </div>
 
                     <div class="benefits-grid">
                         <div class="benefit">
@@ -97,22 +145,25 @@
                         </div>
                     </div>
 
-                    <div class="cta-section">
-                        <h2>Schedule Your Service Today</h2>
-                        <p class="cta-subtext">Get a callback in 15 minutes - no commitment required</p>
-                        <form id="lead-form" class="lead-form">
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                placeholder="Your phone number"
-                                required
-                                pattern="[0-9\s\-\(\)]{10,}"
-                                class="phone-input"
-                            >
-                            <button type="submit" class="cta-button">Call Me Now</button>
-                        </form>
-                        <p class="trust-text">✓ No obligation quote • Same-day service available</p>
+                    <div class="faq-section">
+                        <h2>How It Works</h2>
+                        <div class="faq-steps">
+                            <div class="faq-step">
+                                <div class="step-number">1</div>
+                                <h3>Get a Free Quote Instantly!</h3>
+                                <p>If you're happy with your quote we can schedule your cleaning.</p>
+                            </div>
+                            <div class="faq-step">
+                                <div class="step-number">2</div>
+                                <h3>Arrival & Cleaning</h3>
+                                <p>Our technician will arrive on-time & will be wearing face masks for your safety.</p>
+                            </div>
+                            <div class="faq-step">
+                                <div class="step-number">3</div>
+                                <h3>Full Video Inspection</h3>
+                                <p>Once the cleaning is finished, our technician will show you a full video of the inside of your ducts!</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
