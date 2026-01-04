@@ -1,12 +1,5 @@
 // Vercel Serverless Function - A/B Test Statistics Dashboard
-let kv;
-try {
-    const kvModule = await import('@vercel/kv');
-    kv = kvModule.kv;
-} catch (e) {
-    console.warn('KV not available, using fallback mode');
-    kv = null;
-}
+import { kv } from '@vercel/kv';
 
 // Calculate conversion rate
 function calculateConversionRate(impressions, conversions) {
@@ -56,16 +49,6 @@ function normalCDF(x) {
 
 // Get metrics for a variant
 async function getVariantMetrics(variant, period = 'total') {
-    if (!kv) {
-        return {
-            impressions: 0,
-            conversions: 0,
-            uniqueVisitors: 0,
-            uniqueConverters: 0,
-            conversionRate: '0.00'
-        };
-    }
-
     try {
         const metrics = await kv.hgetall(`metrics:${period}:${variant}`);
 
@@ -89,7 +72,7 @@ async function getVariantMetrics(variant, period = 'total') {
             conversionRate: calculateConversionRate(impressions, conversions)
         };
     } catch (error) {
-        console.error(`Error getting metrics for variant ${variant}:`, error);
+        console.error(`Error getting metrics for variant ${variant} (KV might not be set up):`, error);
         return {
             impressions: 0,
             conversions: 0,
@@ -102,10 +85,6 @@ async function getVariantMetrics(variant, period = 'total') {
 
 // Get recent leads
 async function getRecentLeads(limit = 10) {
-    if (!kv) {
-        return [];
-    }
-
     try {
         const leadIds = await kv.lrange('leads:all', 0, limit - 1);
         const leads = await Promise.all(
@@ -116,7 +95,7 @@ async function getRecentLeads(limit = 10) {
         );
         return leads;
     } catch (error) {
-        console.error('Error getting recent leads:', error);
+        console.error('Error getting recent leads (KV might not be set up):', error);
         return [];
     }
 }

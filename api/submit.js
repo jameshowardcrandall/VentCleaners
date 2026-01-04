@@ -1,22 +1,40 @@
 // Vercel Serverless Function - Form Submission Handler
-let kv;
-try {
-    const kvModule = await import('@vercel/kv');
-    kv = kvModule.kv;
-} catch (e) {
-    console.warn('KV not available, using fallback mode');
-    kv = null;
+import { kv } from '@vercel/kv';
+
+// Format phone number to E.164 format (e.g., +1234567890)
+function formatPhoneE164(phone) {
+    // Remove all non-digit characters
+    const digits = phone.replace(/\D/g, '');
+
+    // If it's 10 digits, assume US and add +1
+    if (digits.length === 10) {
+        return `+1${digits}`;
+    }
+
+    // If it's 11 digits starting with 1, add +
+    if (digits.length === 11 && digits.startsWith('1')) {
+        return `+${digits}`;
+    }
+
+    // Otherwise return as-is with + prefix
+    return `+${digits}`;
 }
 
 // Retell AI integration
 async function triggerRetellCall(phone, leadData) {
     const retellApiKey = process.env.RETELL_API_KEY;
     const retellAgentId = process.env.RETELL_AGENT_ID;
+    const retellFromNumber = process.env.RETELL_FROM_NUMBER;
 
     if (!retellApiKey || !retellAgentId) {
         console.error('Retell AI credentials not configured');
         throw new Error('Retell AI not configured');
     }
+
+    // Format phone number to E.164
+    const formattedPhone = formatPhoneE164(phone);
+
+    console.log(`Initiating Retell call to ${formattedPhone} from ${retellFromNumber}`);
 
     try {
         const response = await fetch('https://api.retellai.com/v2/create-phone-call', {
@@ -27,8 +45,8 @@ async function triggerRetellCall(phone, leadData) {
             },
             body: JSON.stringify({
                 agent_id: retellAgentId,
-                to_number: phone.replace(/\D/g, ''), // Remove formatting
-                from_number: null, // Retell will use your configured number
+                to_number: formattedPhone,
+                from_number: retellFromNumber || null,
                 metadata: {
                     lead_source: 'landing_page',
                     variant: leadData.variant,
@@ -57,11 +75,6 @@ async function triggerRetellCall(phone, leadData) {
 async function storeLead(leadData) {
     const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    if (!kv) {
-        console.log('KV not available, logging lead:', leadId, leadData);
-        return leadId;
-    }
-
     try {
         // Store lead data
         await kv.set(leadId, {
@@ -80,8 +93,10 @@ async function storeLead(leadData) {
         return leadId;
 
     } catch (error) {
-        console.error('Database error:', error);
-        throw new Error('Failed to store lead');
+        console.error('Database error (KV might not be set up):', error);
+        // Don't fail - just log the lead
+        console.log('Lead would be stored:', leadId, leadData);
+        return leadId;
     }
 }
 

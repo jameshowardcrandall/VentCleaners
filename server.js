@@ -29,8 +29,14 @@ const mimeTypes = {
 
 // Mock Retell AI call (for local testing)
 async function mockRetellCall(phone, metadata) {
+  // Format phone to E.164
+  const digits = phone.replace(/\D/g, '');
+  const formattedPhone = digits.length === 10 ? `+1${digits}` : `+${digits}`;
+  const fromNumber = process.env.RETELL_FROM_NUMBER || '+15406845359';
+
   console.log('\n📞 [MOCK] Retell AI Call Triggered:');
-  console.log('   Phone:', phone);
+  console.log('   To:', formattedPhone);
+  console.log('   From:', fromNumber);
   console.log('   Variant:', metadata.variant);
   console.log('   Visitor ID:', metadata.visitor_id);
   console.log('   (In production, this would trigger a real call)\n');
