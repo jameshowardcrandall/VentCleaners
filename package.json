@@ -19,6 +19,7 @@
     "vercel": "^33.0.0"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^1.0.0",
     "redis": "^5.10.0"
   }
 }
