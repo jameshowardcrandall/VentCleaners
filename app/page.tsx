@@ -8,6 +8,7 @@ import Stats from '@/components/Stats'
 import Testimonial from '@/components/Testimonial'
 import CTA from '@/components/CTA'
 import Footer from '@/components/Footer'
+import CalBooking from '@/components/CalBooking'
 
 export default function Home() {
   const { variant, visitorId, isLoaded } = useABTest()
@@ -28,6 +29,7 @@ export default function Home() {
       <Testimonial />
       <CTA copy={copy.cta} variant={variant} visitorId={visitorId} />
       <Footer />
+      <CalBooking />
     </div>
   )
 }
