@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "env": {
+    "RETELL_API_KEY": "@retell_api_key"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
+  }
+}

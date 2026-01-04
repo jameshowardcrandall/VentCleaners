@@ -1,0 +1,19 @@
+{
+  "name": "vent-cleaners-landing",
+  "version": "1.0.0",
+  "description": "High-converting landing page for Vent Cleaners with A/B testing",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["landing-page", "dryer-vent", "conversion"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  },
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  }
+}

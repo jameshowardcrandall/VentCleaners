@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vent Cleaners - Professional Dryer Vent Cleaning | Prevent Fires & Save Energy</title>
+    <meta name="description" content="Professional dryer vent cleaning service. Prevent fires, reduce energy bills, and extend dryer life. Same-day service available. Licensed & insured.">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- A/B Test Variant Container -->
+    <div id="variant-container"></div>
+
+    <!-- Variant A: Urgency/Safety Focus -->
+    <template id="variant-a">
+        <div class="hero variant-a">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="warning-badge">⚠️ 15,000+ dryer fires occur annually</div>
+                    <h1>Protect Your Home from Dryer Fires</h1>
+                    <p class="hero-subtitle">Professional dryer vent cleaning that prevents fires, cuts energy bills, and keeps your family safe.</p>
+
+                    <div class="benefits-grid">
+                        <div class="benefit">
+                            <span class="benefit-icon">🔥</span>
+                            <h3>Fire Prevention</h3>
+                            <p>Eliminate lint buildup that causes 34% of dryer fires</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">⚡</span>
+                            <h3>Save on Energy</h3>
+                            <p>Reduce drying time by 50% and lower utility bills</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">⏱️</span>
+                            <h3>Same-Day Service</h3>
+                            <p>Fast response - most jobs completed within 24 hours</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">✓</span>
+                            <h3>Certified Experts</h3>
+                            <p>Licensed, insured professionals with 10+ years experience</p>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>Get Your Free Quote Now</h2>
+                        <p class="cta-subtext">Enter your phone number and we'll call you within 15 minutes</p>
+                        <form id="lead-form" class="lead-form">
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="(555) 123-4567"
+                                required
+                                pattern="[0-9\s\-\(\)]{10,}"
+                                class="phone-input"
+                            >
+                            <button type="submit" class="cta-button">Get My Free Quote</button>
+                        </form>
+                        <p class="trust-text">🔒 We respect your privacy. No spam, just a quick call.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Variant B: Value/Efficiency Focus -->
+    <template id="variant-b">
+        <div class="hero variant-b">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="value-badge">💰 Save $200+ per year on energy</div>
+                    <h1>Cut Your Dryer Energy Costs in Half</h1>
+                    <p class="hero-subtitle">Professional dryer vent cleaning delivers faster drying, lower bills, and peace of mind.</p>
+
+                    <div class="benefits-grid">
+                        <div class="benefit">
+                            <span class="benefit-icon">💵</span>
+                            <h3>Lower Energy Bills</h3>
+                            <p>Save up to 50% on dryer energy costs every month</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">⚡</span>
+                            <h3>Faster Drying</h3>
+                            <p>Cut drying time in half - get your laundry done faster</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">🛡️</span>
+                            <h3>Safety First</h3>
+                            <p>Prevent dangerous lint buildup and dryer fires</p>
+                        </div>
+                        <div class="benefit">
+                            <span class="benefit-icon">👨‍🔧</span>
+                            <h3>Expert Service</h3>
+                            <p>Licensed professionals - same-day service available</p>
+                        </div>
+                    </div>
+
+                    <div class="cta-section">
+                        <h2>Schedule Your Service Today</h2>
+                        <p class="cta-subtext">Get a callback in 15 minutes - no commitment required</p>
+                        <form id="lead-form" class="lead-form">
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Your phone number"
+                                required
+                                pattern="[0-9\s\-\(\)]{10,}"
+                                class="phone-input"
+                            >
+                            <button type="submit" class="cta-button">Call Me Now</button>
+                        </form>
+                        <p class="trust-text">✓ No obligation quote • Same-day service available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Thank You! 📞</h2>
+            <p>We'll call you within the next 15 minutes to discuss your dryer vent cleaning service.</p>
+            <p class="phone-display">Calling: <span id="submitted-phone"></span></p>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="/ab-test.js"></script>
+    <script src="/form-handler.js"></script>
+</body>
+</html>
