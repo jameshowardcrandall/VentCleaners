@@ -1,5 +1,15 @@
 // Vercel Serverless Function - Form Submission Handler
-import { kv } from '@vercel/kv';
+import { createClient } from 'redis';
+
+// Redis client singleton
+let redis = null;
+async function getRedis() {
+    if (!redis && process.env.REDIS_URL) {
+        redis = createClient({ url: process.env.REDIS_URL });
+        await redis.connect();
+    }
+    return redis;
+}
 
 // Format phone number to E.164 format (e.g., +1234567890)
 function formatPhoneE164(phone) {
@@ -76,24 +86,30 @@ async function storeLead(leadData) {
     const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
     try {
-        // Store lead data
-        await kv.set(leadId, {
+        const client = await getRedis();
+        if (!client) {
+            console.log('Redis not available, logging lead:', leadId, leadData);
+            return leadId;
+        }
+
+        // Store lead data as JSON
+        await client.set(leadId, JSON.stringify({
             ...leadData,
             createdAt: new Date().toISOString(),
             status: 'pending_call'
-        });
+        }));
 
-        // Add to leads list (for easy retrieval)
-        await kv.lpush('leads:all', leadId);
+        // Add to leads list
+        await client.lPush('leads:all', leadId);
 
         // Track by variant
-        await kv.lpush(`leads:variant:${leadData.variant}`, leadId);
+        await client.lPush(`leads:variant:${leadData.variant}`, leadId);
 
         console.log('Lead stored:', leadId);
         return leadId;
 
     } catch (error) {
-        console.error('Database error (KV might not be set up):', error);
+        console.error('Database error (Redis might not be set up):', error);
         // Don't fail - just log the lead
         console.log('Lead would be stored:', leadId, leadData);
         return leadId;
@@ -163,12 +179,15 @@ export default async function handler(req, res) {
 
         // Update lead with call ID
         try {
-            const lead = await kv.get(leadId);
-            await kv.set(leadId, {
-                ...lead,
-                retellCallId: retellResponse.call_id,
-                callStatus: retellResponse.call_status
-            });
+            const client = await getRedis();
+            if (client) {
+                const lead = JSON.parse(await client.get(leadId) || '{}');
+                await client.set(leadId, JSON.stringify({
+                    ...lead,
+                    retellCallId: retellResponse.call_id,
+                    callStatus: retellResponse.call_status
+                }));
+            }
         } catch (error) {
             console.error('Failed to update lead with call ID:', error);
         }

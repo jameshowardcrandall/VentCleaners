@@ -1,5 +1,15 @@
 // Vercel Serverless Function - A/B Test Statistics Dashboard
-import { kv } from '@vercel/kv';
+import { createClient } from 'redis';
+
+// Redis client singleton
+let redis = null;
+async function getRedis() {
+    if (!redis && process.env.REDIS_URL) {
+        redis = createClient({ url: process.env.REDIS_URL });
+        await redis.connect();
+    }
+    return redis;
+}
 
 // Calculate conversion rate
 function calculateConversionRate(impressions, conversions) {
@@ -50,19 +60,30 @@ function normalCDF(x) {
 // Get metrics for a variant
 async function getVariantMetrics(variant, period = 'total') {
     try {
-        const metrics = await kv.hgetall(`metrics:${period}:${variant}`);
+        const client = await getRedis();
+        if (!client) {
+            return {
+                impressions: 0,
+                conversions: 0,
+                uniqueVisitors: 0,
+                uniqueConverters: 0,
+                conversionRate: '0.00'
+            };
+        }
+
+        const metrics = await client.hGetAll(`metrics:${period}:${variant}`);
 
         const impressions = parseInt(metrics?.impressions || 0);
         const conversions = parseInt(metrics?.conversions || 0);
 
         // Get unique visitor counts
         const uniqueVisitors = period === 'total'
-            ? await kv.scard(`visitors:total:${variant}`)
-            : await kv.scard(`visitors:${period}:${variant}`);
+            ? await client.sCard(`visitors:total:${variant}`)
+            : await client.sCard(`visitors:${period}:${variant}`);
 
         const uniqueConverters = period === 'total'
-            ? await kv.scard(`converters:total:${variant}`)
-            : await kv.scard(`converters:${period}:${variant}`);
+            ? await client.sCard(`converters:total:${variant}`)
+            : await client.sCard(`converters:${period}:${variant}`);
 
         return {
             impressions,
@@ -72,7 +93,7 @@ async function getVariantMetrics(variant, period = 'total') {
             conversionRate: calculateConversionRate(impressions, conversions)
         };
     } catch (error) {
-        console.error(`Error getting metrics for variant ${variant} (KV might not be set up):`, error);
+        console.error(`Error getting metrics for variant ${variant} (Redis might not be set up):`, error);
         return {
             impressions: 0,
             conversions: 0,
@@ -86,16 +107,22 @@ async function getVariantMetrics(variant, period = 'total') {
 // Get recent leads
 async function getRecentLeads(limit = 10) {
     try {
-        const leadIds = await kv.lrange('leads:all', 0, limit - 1);
+        const client = await getRedis();
+        if (!client) {
+            return [];
+        }
+
+        const leadIds = await client.lRange('leads:all', 0, limit - 1);
         const leads = await Promise.all(
             leadIds.map(async (id) => {
-                const lead = await kv.get(id);
+                const leadData = await client.get(id);
+                const lead = leadData ? JSON.parse(leadData) : {};
                 return { id, ...lead };
             })
         );
         return leads;
     } catch (error) {
-        console.error('Error getting recent leads (KV might not be set up):', error);
+        console.error('Error getting recent leads (Redis might not be set up):', error);
         return [];
     }
 }
