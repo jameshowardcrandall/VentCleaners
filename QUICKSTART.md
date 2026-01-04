@@ -61,7 +61,8 @@ This final deployment includes your environment variables.
 
 ## Step 7: Test It!
 
-1. Visit your live URL (shown after deployment)
+1. Visit your live URnpm run dev
+L (shown after deployment)
 2. Test the form with your phone number
 3. Verify you receive a call from Retell AI
 4. Check analytics at: `https://your-url.vercel.app/api/stats?token=your_stats_token`
